@@ -80,14 +80,16 @@ class TicketResource extends Resource
                                     ->required()
                                     ->searchable()
                                     ->preload()
-                                    ->badge()
-                                    ->color(fn ($state) => match($state) {
-                                        1 => 'success',
-                                        2 => 'info',
-                                        3 => 'warning',
-                                        4 => 'danger',
-                                        default => 'gray',
-                                    }),
+                                    ->formatStateUsing(fn ($state) => [
+                                        'label' => $state,
+                                        'color' => match($state) {
+                                            1 => 'success',
+                                            2 => 'info', 
+                                            3 => 'warning',
+                                            4 => 'danger',
+                                            default => 'gray',
+                                        }
+                                    ]),
 
                                 Forms\Components\Select::make('status_id')
                                     ->relationship('status', 'name')
