@@ -38,31 +38,54 @@ A comprehensive, customizable support ticketing system built for FilamentPHP wit
 
 ## Installation
 
+1. Install the package via composer:
 ```bash
 composer require mavrickdeveloper/ticksya
 ```
 
-## Configuration
-
-1. Publish the configuration file:
-
+2. Run the installation command:
 ```bash
-php artisan vendor:publish --tag="ticksya-config"
+php artisan ticksya:install
 ```
 
-2. Publish the translations (optional):
+This will:
+- Publish the configuration file
+- Publish the migration files
+- Ask if you want to run migrations immediately
+- Set up the necessary database tables
+
+3. If you didn't run migrations during installation, run them manually:
+```bash
+php artisan migrate
+```
+
+4. Add the plugin to your Filament panel provider (typically `app/Providers/Filament/AdminPanelProvider.php`):
+```php
+use Ticksya\TicksyaPlugin;
+
+public function panel(Panel $panel): Panel
+{
+    return $panel
+        // ... your other panel configuration
+        ->plugin(TicksyaPlugin::make());
+}
+```
+
+## Configuration
+
+After installation, you can customize the package behavior by modifying the published configuration file:
+
+```bash
+config/ticksya.php
+```
+
+1. Publish the translations (optional):
 
 ```bash
 php artisan vendor:publish --tag="ticksya-translations"
 ```
 
-3. Run the migrations:
-
-```bash
-php artisan migrate
-```
-
-4. Configure your environment variables in `.env`:
+2. Configure your environment variables in `.env`:
 
 ```env
 # Core Settings

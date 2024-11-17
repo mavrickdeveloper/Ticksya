@@ -28,20 +28,18 @@ class TicksyaServiceProvider extends PackageServiceProvider
          *
          * More info: https://github.com/spatie/laravel-package-tools
          */
-        
+
         $package
             ->name(static::$name)
             ->hasConfigFile()
             ->hasViews()
             ->hasTranslations()
-            ->hasMigrations([
-                'create_tickets_table',
-                'create_ticket_categories_table',
-                'create_ticket_priorities_table',
-                'create_ticket_statuses_table',
-                'create_ticket_comments_table',
-                'create_ticket_attachments_table',
-            ])
+            ->hasMigration('create_tickets_table')
+            ->hasMigration('create_ticket_categories_table')
+            ->hasMigration('create_ticket_priorities_table')
+            ->hasMigration('create_ticket_statuses_table')
+            ->hasMigration('create_ticket_comments_table')
+            ->hasMigration('create_ticket_attachments_table')
             ->hasCommand(TicksyaCommand::class)
             ->hasInstallCommand(function(InstallCommand $command) {
                 $command
