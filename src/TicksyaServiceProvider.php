@@ -2,64 +2,40 @@
 
 namespace Ticksya;
 
+use Filament\Support\Assets\Asset;
+use Filament\Support\Facades\FilamentAsset;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 use Ticksya\Commands\TicksyaCommand;
 
 class TicksyaServiceProvider extends PackageServiceProvider
 {
-
     public static string $name = 'ticksya';
-    public function register(): void
+
+    public function configurePackage(Package $package): void
     {
-        
-        //Register generate command
-        $this->commands([
-            TicksyaCommand::class,
-        ]);
-
-        //Register Config file
-        $this->mergeConfigFrom(__DIR__.'/../config/ticksya.php', 'ticksya');
-
-        //Publish Config
-        $this->publishes([
-            __DIR__.'/../config/ticksya.php' => config_path('ticksya.php'),
-        ], 'ticksya-config');
-
-        //Register Migrations
-        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
-
-        //Publish Migrations
-        $this->publishes([
-            __DIR__.'/../database/migrations' => database_path('migrations'),
-        ], 'ticksya-migrations');
-
-        //Register views
-        $this->loadViewsFrom(__DIR__.'/../resources/views', 'ticksya');
-
-        //Publish Views
-        $this->publishes([
-            __DIR__.'/../resources/views' => resource_path('views/vendor/ticksya'),
-        ], 'ticksya-views');
-
-        //Register Langs
-        $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'ticksya');
-
-        //Publish Lang
-        $this->publishes([
-            __DIR__.'/../resources/lang' => base_path('lang/vendor/ticksya'),
-        ], 'ticksya-lang');
-
-        $this->app->bind('ticksya', function () {
-            return new \Ticksya\Services\TicksyaServices();
-        });
+        $package
+            ->name(static::$name)
+            ->hasConfigFile()
+            ->hasViews()
+            ->hasTranslations()
+            ->hasMigrations([
+                'create_ticket_categories_table',
+                'create_ticket_priorities_table',
+                'create_ticket_statuses_table',
+                'create_tickets_table',
+                'add_notification_preferences_to_users_table',
+            ])
+            ->hasCommand(TicksyaCommand::class);
     }
 
-    public function boot(): void
+    public function packageBooted(): void
     {
-        // Register the plugin with Filament
-        $this->app->afterResolving('filament', function ($filament) {
-            $filament->registerPlugin(\Ticksya\TicksyaPlugin::make());
-        });
+        parent::packageBooted();
+
+        // Register assets if needed
+        FilamentAsset::register([
+            // Your assets here
+        ], 'ticksya');
     }
 }
