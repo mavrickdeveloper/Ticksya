@@ -8,6 +8,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Ticksya\Models\Ticket;
+use Ticksya\Models\TicketPriority;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
@@ -92,6 +93,7 @@ class TicketResource extends Resource
                                         Forms\Components\Toggle::make('is_active')
                                             ->default(true),
                                     ])
+                                    ->getOptionLabelUsing(fn ($value): ?string => TicketPriority::find($value)?->name)
                                     ->formatStateUsing(fn ($state) => [
                                         'label' => $state,
                                         'color' => match($state) {
@@ -198,9 +200,9 @@ class TicketResource extends Resource
                     ->color(fn ($record) => $record->category->color ?? 'gray'),
 
                 Tables\Columns\TextColumn::make('priority.name')
-                    ->formatStateUsing(fn ($state) => is_object($state) ? $state->name : $state)
                     ->badge()
-                    ->color(fn ($record) => match($record->priority->id ?? null) {
+                    ->color(fn ($record) => match($record->priority?->level ?? 0) {
+                        0 => 'gray',
                         1 => 'success',
                         2 => 'info',
                         3 => 'warning',

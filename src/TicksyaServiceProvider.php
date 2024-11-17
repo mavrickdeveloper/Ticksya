@@ -2,11 +2,13 @@
 
 namespace Ticksya;
 
+use Filament\Facades\Filament;
 use Filament\Support\Assets\Asset;
 use Filament\Support\Facades\FilamentAsset;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 use Ticksya\Commands\TicksyaCommand;
+use Ticksya\TicksyaPlugin;
 
 class TicksyaServiceProvider extends PackageServiceProvider
 {
@@ -48,5 +50,19 @@ class TicksyaServiceProvider extends PackageServiceProvider
         FilamentAsset::register([
             // Your assets here
         ], 'ticksya');
+    }
+
+    public function packageRegistered(): void
+    {
+        parent::packageRegistered();
+
+        // Register the Filament plugin
+        $this->app->singleton(TicksyaPlugin::class, function () {
+            return new TicksyaPlugin();
+        });
+
+        $this->app->resolving('filament', function () {
+            Filament::registerPlugin($this->app->make(TicksyaPlugin::class));
+        });
     }
 }
