@@ -35,10 +35,10 @@ class TicksyaServiceProvider extends PackageServiceProvider
             ->hasViews()
             ->hasTranslations()
             ->hasMigrations([
-                'create_tickets_table',
                 'create_ticket_categories_table',
                 'create_ticket_priorities_table',
                 'create_ticket_statuses_table',
+                'create_tickets_table',
                 'create_ticket_comments_table',
                 'create_ticket_attachments_table'
             ])
