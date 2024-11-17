@@ -1,6 +1,6 @@
 {
     "name": "mavrickdeveloper/ticksya",
-    "description": "Advanced FilamentPHP Support Ticketing System for Laravel", 
+    "description": "Advanced FilamentPHP Support Ticketing System", 
     "version": "1.0",
     "type": "library",
     "keywords": [
