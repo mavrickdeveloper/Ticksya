@@ -3,6 +3,7 @@ namespace Ticksya;
 
 use Filament\Contracts\Plugin;
 use Filament\Panel;
+use Ticksya\Filament\Resources\TicketResource;
 
 class TicksyaPlugin implements Plugin
 {
@@ -15,10 +16,10 @@ class TicksyaPlugin implements Plugin
     {
         $panel
             ->resources([
-                // Your resources here
+                TicketResource::class,
             ])
-            ->pages([
-                // Your pages here
+            ->navigationGroups([
+                'Support Tickets'
             ]);
     }
 
@@ -27,7 +28,6 @@ class TicksyaPlugin implements Plugin
         // Boot logic here
     }
 
-    // Recommended fluent instantiation method
     public static function make(): static
     {
         return app(static::class);

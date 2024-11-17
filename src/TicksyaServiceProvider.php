@@ -8,6 +8,7 @@ use Filament\Support\Assets\Css;
 use Filament\Support\Assets\Js;
 use Filament\Support\Facades\FilamentAsset;
 use Filament\Support\Facades\FilamentIcon;
+use Filament\Panel;
 use Illuminate\Filesystem\Filesystem;
 use Livewire\Features\SupportTesting\Testable;
 use Spatie\LaravelPackageTools\Commands\InstallCommand;
@@ -34,7 +35,7 @@ class TicksyaServiceProvider extends PackageServiceProvider
             ->hasTranslations()
             ->hasMigrations([
                 'create_tickets_table',
-                'create_ticket_categories_table', 
+                'create_ticket_categories_table',
                 'create_ticket_priorities_table',
                 'create_ticket_statuses_table',
                 'create_ticket_comments_table',
@@ -51,6 +52,13 @@ class TicksyaServiceProvider extends PackageServiceProvider
 
     public function packageBooted(): void
     {
+        parent::packageBooted();
+
+        // Register the plugin with Filament
+        $this->app->afterResolving(Panel::class, function (Panel $panel) {
+            $panel->plugin(TicksyaPlugin::make());
+        });
+
         // Register any assets
         FilamentAsset::register([
             // Your assets here
