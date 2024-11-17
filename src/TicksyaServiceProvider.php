@@ -23,12 +23,6 @@ class TicksyaServiceProvider extends PackageServiceProvider
 
     public function configurePackage(Package $package): void
     {
-        /*
-         * This class is a Package Service Provider
-         *
-         * More info: https://github.com/spatie/laravel-package-tools
-         */
-
         $package
             ->name(static::$name)
             ->hasConfigFile()
@@ -39,16 +33,9 @@ class TicksyaServiceProvider extends PackageServiceProvider
                 'create_ticket_priorities_table',
                 'create_ticket_statuses_table',
                 'create_tickets_table',
-                'create_ticket_comments_table',
-                'create_ticket_attachments_table'
-            ])
-            ->hasCommand(TicksyaCommand::class)
-            ->hasInstallCommand(function(InstallCommand $command) {
-                $command
-                    ->publishConfigFile()
-                    ->askToRunMigrations()
-                    ->askToStarRepoOnGitHub('mavrickdeveloper/ticksya');
-            });
+                'add_notification_preferences_to_users_table',
+
+            ]);
     }
 
     public function packageRegistered(): void
@@ -60,11 +47,6 @@ class TicksyaServiceProvider extends PackageServiceProvider
     public function packageBooted(): void
     {
         parent::packageBooted();
-
-        // Register migrations
-        $this->publishes([
-            __DIR__.'/../database/migrations' => database_path('migrations')
-        ], 'migrations');
 
         // Register the plugin with Filament
         $this->app->afterResolving(Panel::class, function (Panel $panel) {
