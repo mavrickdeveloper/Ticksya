@@ -22,6 +22,11 @@ class TicksyaServiceProvider extends PackageServiceProvider
 
     public function configurePackage(Package $package): void
     {
+        /*
+         * This class is a Package Service Provider
+         *
+         * More info: https://github.com/spatie/laravel-package-tools
+         */
         $package
             ->name(static::$name)
             ->hasConfigFile()
@@ -29,7 +34,7 @@ class TicksyaServiceProvider extends PackageServiceProvider
             ->hasTranslations()
             ->hasMigrations([
                 'create_tickets_table',
-                'create_ticket_categories_table',
+                'create_ticket_categories_table', 
                 'create_ticket_priorities_table',
                 'create_ticket_statuses_table',
                 'create_ticket_comments_table',
@@ -40,16 +45,19 @@ class TicksyaServiceProvider extends PackageServiceProvider
 
     public function packageRegistered(): void
     {
+        // Register the package
         parent::packageRegistered();
     }
 
     public function packageBooted(): void
     {
+        // Boot the package
         parent::packageBooted();
-        
-        // Register Assets
+
+        // Register Assets for Filament 3
         FilamentAsset::register([
-            // Add your assets here
-        ], static::$name);
+            AlpineComponent::make('ticksya', __DIR__ . '/../resources/dist/ticksya.js'),
+            Css::make('ticksya-styles', __DIR__ . '/../resources/dist/ticksya.css'),
+        ], 'ticksya');
     }
 }
