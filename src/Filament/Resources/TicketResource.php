@@ -177,9 +177,9 @@ class TicketResource extends Resource
                     ->color(fn ($record) => $record->category->color ?? 'gray'),
 
                 Tables\Columns\TextColumn::make('priority.name')
-                    ->sortable()
+                    ->formatStateUsing(fn ($state) => is_object($state) ? $state->name : $state)
                     ->badge()
-                    ->color(fn (Model $record): string => match ($record->priority->level) {
+                    ->color(fn ($record) => match($record->priority->id ?? null) {
                         1 => 'success',
                         2 => 'info',
                         3 => 'warning',
