@@ -34,16 +34,17 @@ class TicksyaServiceProvider extends PackageServiceProvider
             ->hasConfigFile()
             ->hasViews()
             ->hasTranslations()
-            ->hasMigration('create_tickets_table')
-            ->hasMigration('create_ticket_categories_table')
-            ->hasMigration('create_ticket_priorities_table')
-            ->hasMigration('create_ticket_statuses_table')
-            ->hasMigration('create_ticket_comments_table')
-            ->hasMigration('create_ticket_attachments_table')
+            ->hasMigrations([
+                'create_tickets_table',
+                'create_ticket_categories_table',
+                'create_ticket_priorities_table',
+                'create_ticket_statuses_table',
+                'create_ticket_comments_table',
+                'create_ticket_attachments_table'
+            ])
             ->hasCommand(TicksyaCommand::class)
             ->hasInstallCommand(function(InstallCommand $command) {
                 $command
-                    ->publishMigrations()
                     ->publishConfigFile()
                     ->askToRunMigrations()
                     ->askToStarRepoOnGitHub('mavrickdeveloper/ticksya');
@@ -59,6 +60,11 @@ class TicksyaServiceProvider extends PackageServiceProvider
     public function packageBooted(): void
     {
         parent::packageBooted();
+
+        // Register migrations
+        $this->publishes([
+            __DIR__.'/../database/migrations' => database_path('migrations')
+        ], 'migrations');
 
         // Register the plugin with Filament
         $this->app->afterResolving(Panel::class, function (Panel $panel) {

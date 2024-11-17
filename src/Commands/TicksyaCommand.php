@@ -14,30 +14,30 @@ class TicksyaCommand extends Command
     public function handle(): int
     {
         $this->info('Installing Ticksya...');
-        
+
         // Publish migrations
+        $this->info('Publishing migrations...');
         $this->call('vendor:publish', [
             '--provider' => 'Ticksya\\TicksyaServiceProvider',
-            '--tag' => 'ticksya-migrations'
+            '--tag' => 'migrations'
         ]);
 
         // Publish config
+        $this->info('Publishing config...');
         $this->call('vendor:publish', [
             '--provider' => 'Ticksya\\TicksyaServiceProvider',
-            '--tag' => 'ticksya-config'
+            '--tag' => 'config'
         ]);
 
-        // Run migrations
-        if ($this->confirm('Would you like to run migrations now?', true)) {
+        // Run migrations if requested
+        if ($this->confirm('Would you like to run migrations now?', false)) {
             $this->info('Running migrations...');
             $this->call('migrate');
-        }
-
-        $this->info('Ticksya has been installed successfully!');
-        
-        if (!$this->confirm('Would you like to run migrations now?', true)) {
+        } else {
             $this->info('Please remember to run migrations with: php artisan migrate');
         }
+
+        $this->info('Ticksya has been installed!');
 
         return self::SUCCESS;
     }
