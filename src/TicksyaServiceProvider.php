@@ -28,6 +28,7 @@ class TicksyaServiceProvider extends PackageServiceProvider
          *
          * More info: https://github.com/spatie/laravel-package-tools
          */
+        
         $package
             ->name(static::$name)
             ->hasConfigFile()
