@@ -14,13 +14,13 @@ class TicksyaCommand extends Command
     {
         $this->info('Installing Ticksya...');
         
-        // Add installation logic here
         $this->call('vendor:publish', [
             '--provider' => 'Ticksya\\TicksyaServiceProvider',
-            '--tag' => 'ticksya-config'
+            '--tag' => ['ticksya-config', 'ticksya-migrations']
         ]);
 
         $this->info('Ticksya has been installed successfully!');
+        $this->info('Please run: php artisan migrate');
 
         return self::SUCCESS;
     }

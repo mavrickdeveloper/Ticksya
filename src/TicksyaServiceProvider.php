@@ -35,9 +35,7 @@ class TicksyaServiceProvider extends PackageServiceProvider
                 'create_ticket_comments_table',
                 'create_ticket_attachments_table',
             ])
-            ->hasCommands([
-                TicksyaCommand::class,
-            ]);
+            ->hasCommand(TicksyaCommand::class);
     }
 
     public function packageRegistered(): void
