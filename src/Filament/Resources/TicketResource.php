@@ -80,6 +80,18 @@ class TicketResource extends Resource
                                     ->required()
                                     ->searchable()
                                     ->preload()
+                                    ->createOptionForm([
+                                        Forms\Components\TextInput::make('name')
+                                            ->required(),
+                                        Forms\Components\TextInput::make('description'),
+                                        Forms\Components\ColorPicker::make('color')
+                                            ->required(),
+                                        Forms\Components\TextInput::make('level')
+                                            ->numeric()
+                                            ->default(0),
+                                        Forms\Components\Toggle::make('is_active')
+                                            ->default(true),
+                                    ])
                                     ->formatStateUsing(fn ($state) => [
                                         'label' => $state,
                                         'color' => match($state) {
@@ -96,6 +108,15 @@ class TicketResource extends Resource
                                     ->required()
                                     ->searchable()
                                     ->preload()
+                                    ->createOptionForm([
+                                        Forms\Components\TextInput::make('name')
+                                            ->required(),
+                                        Forms\Components\TextInput::make('description'),
+                                        Forms\Components\ColorPicker::make('color')
+                                            ->required(),
+                                        Forms\Components\Toggle::make('is_active')
+                                            ->default(true),
+                                    ])
                                     ->live(),
 
                                 Forms\Components\Select::make('assigned_to')

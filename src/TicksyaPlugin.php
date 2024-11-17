@@ -5,6 +5,7 @@ use Filament\Contracts\Plugin;
 use Filament\Panel;
 use Ticksya\Filament\Resources\TicketResource;
 use Ticksya\Filament\Resources\TicketPriorityResource;
+use Ticksya\Filament\Resources\TicketStatusResource;
 
 class TicksyaPlugin implements Plugin
 {
@@ -19,6 +20,7 @@ class TicksyaPlugin implements Plugin
             ->resources([
                 TicketResource::class,
                 TicketPriorityResource::class,
+                TicketStatusResource::class,
             ])
             ->navigationGroups([
                 'Support Tickets'
