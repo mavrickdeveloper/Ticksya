@@ -2,13 +2,17 @@
 
 namespace Ticksya;
 
-use Illuminate\Support\ServiceProvider;
+use Spatie\LaravelPackageTools\Package;
+use Spatie\LaravelPackageTools\PackageServiceProvider;
 use Ticksya\Commands\TicksyaCommand;
 
-class TicksyaServiceProvider extends ServiceProvider
+class TicksyaServiceProvider extends PackageServiceProvider
 {
+
+    public static string $name = 'ticksya';
     public function register(): void
     {
+        
         //Register generate command
         $this->commands([
             TicksyaCommand::class,
