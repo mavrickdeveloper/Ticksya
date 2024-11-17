@@ -15,15 +15,17 @@ class TicksyaCommand extends Command
     {
         $this->info('Installing Ticksya...');
 
-        // Publish migrations with the correct tag
+        // Publish migrations
         $this->info('Publishing migrations...');
         $this->call('vendor:publish', [
+            '--provider' => 'Ticksya\\TicksyaServiceProvider',
             '--tag' => 'ticksya-migrations'
         ]);
 
         // Publish config
         $this->info('Publishing config...');
         $this->call('vendor:publish', [
+            '--provider' => 'Ticksya\\TicksyaServiceProvider',
             '--tag' => 'ticksya-config'
         ]);
 

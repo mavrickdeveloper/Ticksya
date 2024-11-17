@@ -44,14 +44,19 @@
     "prefer-stable": true,
     "autoload": {
         "psr-4": {
-            "Ticksya\\": "src/",
-            "Ticksya\\Commands\\": "src/Commands/"
+            "Ticksya\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
             "Ticksya\\Tests\\": "tests/"
         }
+    },
+    "scripts": {
+        "post-autoload-dump": "@php ./vendor/bin/testbench package:discover --ansi",
+        "test": "vendor/bin/pest",
+        "test-coverage": "vendor/bin/pest --coverage",
+        "format": "vendor/bin/pint"
     },
     "config": {
         "sort-packages": true,
@@ -66,12 +71,5 @@
                 "Ticksya\\TicksyaServiceProvider"
             ]
         }
-    },
-    "scripts": {
-        "post-autoload-dump": [],
-        "test": "vendor/bin/pest",
-        "test-coverage": "vendor/bin/pest --coverage",
-        "format": "vendor/bin/pint",
-        "analyse": "vendor/bin/phpstan analyse"
     }
 }
