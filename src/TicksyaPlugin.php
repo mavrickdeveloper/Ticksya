@@ -15,18 +15,19 @@ class TicksyaPlugin implements Plugin
     {
         $panel
             ->resources([
-                Resources\TicketResource::class,
+                // Your resources here
             ])
             ->pages([
-                Pages\NotificationPreferences::class,
+                // Your pages here
             ]);
     }
 
     public function boot(Panel $panel): void
     {
-        //
+        // Boot logic here
     }
 
+    // Recommended fluent instantiation method
     public static function make(): static
     {
         return app(static::class);

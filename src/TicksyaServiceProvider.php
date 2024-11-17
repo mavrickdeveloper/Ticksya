@@ -51,13 +51,9 @@ class TicksyaServiceProvider extends PackageServiceProvider
 
     public function packageBooted(): void
     {
-        // Boot the package
-        parent::packageBooted();
-
-        // Register Assets for Filament 3
+        // Register any assets
         FilamentAsset::register([
-            AlpineComponent::make('ticksya', __DIR__ . '/../resources/dist/ticksya.js'),
-            Css::make('ticksya-styles', __DIR__ . '/../resources/dist/ticksya.css'),
+            // Your assets here
         ], 'ticksya');
     }
 }
