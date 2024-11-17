@@ -24,7 +24,9 @@ class TicksyaPlugin implements Plugin
             ])
             ->navigationGroups([
                 'Support Tickets'
-            ]);
+            ])
+            ->id('ticksya')
+            ->path('admin');
     }
 
     public function boot(Panel $panel): void
@@ -33,6 +35,11 @@ class TicksyaPlugin implements Plugin
     }
 
     public static function make(): static
+    {
+        return app(static::class);
+    }
+
+    public static function get(): static
     {
         return app(static::class);
     }

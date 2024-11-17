@@ -8,6 +8,7 @@ use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 use Ticksya\Commands\TicksyaCommand;
 use Filament\Panel;
+use Filament\PanelProvider;
 
 class TicksyaServiceProvider extends PackageServiceProvider
 {
@@ -57,7 +58,10 @@ class TicksyaServiceProvider extends PackageServiceProvider
 
         // Register the plugin with Filament 3
         $this->app->resolving(Panel::class, function (Panel $panel) {
-            $panel->plugin(new TicksyaPlugin());
+            $panel
+                ->id('ticksya')
+                ->default()
+                ->plugin(new TicksyaPlugin());
         });
     }
 }
