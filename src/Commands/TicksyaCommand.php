@@ -3,6 +3,7 @@
 namespace Ticksya\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Artisan;
 
 class TicksyaCommand extends Command
 {
@@ -14,13 +15,29 @@ class TicksyaCommand extends Command
     {
         $this->info('Installing Ticksya...');
         
+        // Publish migrations
         $this->call('vendor:publish', [
             '--provider' => 'Ticksya\\TicksyaServiceProvider',
-            '--tag' => ['ticksya-config', 'ticksya-migrations']
+            '--tag' => 'ticksya-migrations'
         ]);
 
+        // Publish config
+        $this->call('vendor:publish', [
+            '--provider' => 'Ticksya\\TicksyaServiceProvider',
+            '--tag' => 'ticksya-config'
+        ]);
+
+        // Run migrations
+        if ($this->confirm('Would you like to run migrations now?', true)) {
+            $this->info('Running migrations...');
+            $this->call('migrate');
+        }
+
         $this->info('Ticksya has been installed successfully!');
-        $this->info('Please run: php artisan migrate');
+        
+        if (!$this->confirm('Would you like to run migrations now?', true)) {
+            $this->info('Please remember to run migrations with: php artisan migrate');
+        }
 
         return self::SUCCESS;
     }
