@@ -11,6 +11,10 @@ use Ticksya\Models\Ticket;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
+use Ticksya\Filament\Resources\TicketResource\Pages;
+use Ticksya\Filament\Resources\TicketResource\Pages\ListTickets;
+use Ticksya\Filament\Resources\TicketResource\Pages\CreateTicket;
+use Ticksya\Filament\Resources\TicketResource\Pages\EditTicket;
 
 class TicketResource extends Resource
 {
@@ -19,6 +23,8 @@ class TicketResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-ticket';
 
     protected static ?int $navigationSort = 1;
+
+    protected static ?string $navigationGroup = 'Support Tickets';
 
     public static function form(Form $form): Form
     {
@@ -311,6 +317,11 @@ class TicketResource extends Resource
             'create' => Pages\CreateTicket::route('/create'),
             'edit' => Pages\EditTicket::route('/{record}/edit'),
         ];
+    }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
     }
 
     public static function getEloquentQuery(): Builder
