@@ -33,6 +33,17 @@ class TicksyaServiceProvider extends PackageServiceProvider
     {
         parent::packageBooted();
 
+        // Register migrations
+        if ($this->app->runningInConsole()) {
+            $this->publishes([
+                __DIR__ . '/../database/migrations' => database_path('migrations'),
+            ], 'ticksya-migrations');
+
+            $this->publishes([
+                __DIR__ . '/../config/ticksya.php' => config_path('ticksya.php'),
+            ], 'ticksya-config');
+        }
+
         // Register assets if needed
         FilamentAsset::register([
             // Your assets here
