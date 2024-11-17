@@ -1,0 +1,76 @@
+{
+    "name": "mavrickdeveloper/ticksya",
+    "description": "Advanced FilamentPHP Support Ticketing System for Laravel", 
+    "version": "1.0",
+    "type": "library",
+    "keywords": [
+        "mavrickdeveloper",
+        "laravel",
+        "ticksya", 
+        "filamentphp",
+        "support-system",
+        "ticketing"
+    ],
+    "homepage": "https://github.com/mavrickdeveloper/ticksya",
+    "support": {
+        "issues": "https://github.com/mavrickdeveloper/ticksya/issues",
+        "source": "https://github.com/mavrickdeveloper/ticksya"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Mavrick Developer",
+            "email": "sam@mavrick.dev",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^8.2",
+        "filament/filament": "^3.2",
+        "illuminate/contracts": "^11.0",
+        "spatie/laravel-package-tools": "^1.16.0",
+        "laravel/framework": "^11.0"
+    },
+    "require-dev": {
+        "laravel/pint": "^1.13",
+        "nunomaduro/collision": "^8.1", 
+        "orchestra/testbench": "^9.0",
+        "pestphp/pest": "^2.34",
+        "pestphp/pest-plugin-arch": "^2.7",
+        "pestphp/pest-plugin-laravel": "^2.3",
+        "phpunit/phpunit": "^11.0"
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true,
+    "autoload": {
+        "psr-4": {
+            "Ticksya\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Ticksya\\Tests\\": "tests/"
+        }
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true,
+            "phpstan/extension-installer": true
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Ticksya\\TicksyaServiceProvider"
+            ]
+        }
+    },
+    "scripts": {
+        "post-autoload-dump": [],
+        "analyse": "vendor/bin/phpstan analyse",
+        "test": "vendor/bin/pest",
+        "test-coverage": "vendor/bin/pest --coverage",
+        "format": "vendor/bin/pint"
+    }
+}
