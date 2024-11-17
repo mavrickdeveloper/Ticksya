@@ -2,60 +2,60 @@
 
 namespace Ticksya;
 
-use Filament\Support\Assets\AlpineComponent;
-use Filament\Support\Assets\Asset;
-use Filament\Support\Assets\Css;
-use Filament\Support\Assets\Js;
-use Filament\Support\Facades\FilamentAsset;
-use Filament\Support\Facades\FilamentIcon;
-use Filament\Panel;
-use Illuminate\Filesystem\Filesystem;
-use Livewire\Features\SupportTesting\Testable;
-use Spatie\LaravelPackageTools\Commands\InstallCommand;
-use Spatie\LaravelPackageTools\Package;
-use Spatie\LaravelPackageTools\PackageServiceProvider;
+use Illuminate\Support\ServiceProvider;
 use Ticksya\Commands\TicksyaCommand;
-use Ticksya\Testing\TestsTicksya;
 
-class TicksyaServiceProvider extends PackageServiceProvider
+class TicksyaServiceProvider extends ServiceProvider
 {
-    public static string $name = 'ticksya';
-
-    public function configurePackage(Package $package): void
+    public function register(): void
     {
-        $package
-            ->name(static::$name)
-            ->hasConfigFile()
-            ->hasViews()
-            ->hasTranslations()
-            ->hasMigrations([
-                'create_ticket_categories_table',
-                'create_ticket_priorities_table',
-                'create_ticket_statuses_table',
-                'create_tickets_table',
-                'add_notification_preferences_to_users_table',
+        //Register generate command
+        $this->commands([
+            TicksyaCommand::class,
+        ]);
 
-            ]);
-    }
+        //Register Config file
+        $this->mergeConfigFrom(__DIR__.'/../config/ticksya.php', 'ticksya');
 
-    public function packageRegistered(): void
-    {
-        // Register the package
-        parent::packageRegistered();
-    }
+        //Publish Config
+        $this->publishes([
+            __DIR__.'/../config/ticksya.php' => config_path('ticksya.php'),
+        ], 'ticksya-config');
 
-    public function packageBooted(): void
-    {
-        parent::packageBooted();
+        //Register Migrations
+        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
 
-        // Register the plugin with Filament
-        $this->app->afterResolving(Panel::class, function (Panel $panel) {
-            $panel->plugin(TicksyaPlugin::make());
+        //Publish Migrations
+        $this->publishes([
+            __DIR__.'/../database/migrations' => database_path('migrations'),
+        ], 'ticksya-migrations');
+
+        //Register views
+        $this->loadViewsFrom(__DIR__.'/../resources/views', 'ticksya');
+
+        //Publish Views
+        $this->publishes([
+            __DIR__.'/../resources/views' => resource_path('views/vendor/ticksya'),
+        ], 'ticksya-views');
+
+        //Register Langs
+        $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'ticksya');
+
+        //Publish Lang
+        $this->publishes([
+            __DIR__.'/../resources/lang' => base_path('lang/vendor/ticksya'),
+        ], 'ticksya-lang');
+
+        $this->app->bind('ticksya', function () {
+            return new \Ticksya\Services\TicksyaServices();
         });
+    }
 
-        // Register any assets
-        FilamentAsset::register([
-            // Your assets here
-        ], 'ticksya');
+    public function boot(): void
+    {
+        // Register the plugin with Filament
+        $this->app->afterResolving('filament', function ($filament) {
+            $filament->registerPlugin(\Ticksya\TicksyaPlugin::make());
+        });
     }
 }
