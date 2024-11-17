@@ -94,16 +94,21 @@ class TicketResource extends Resource
                                             ->default(true),
                                     ])
                                     ->getOptionLabelUsing(fn ($value): ?string => TicketPriority::find($value)?->name)
-                                    ->formatStateUsing(fn ($state) => [
-                                        'label' => $state,
-                                        'color' => match($state) {
-                                            1 => 'success',
-                                            2 => 'info', 
-                                            3 => 'warning',
-                                            4 => 'danger',
-                                            default => 'gray',
+                                    ->formatStateUsing(function ($state) {
+                                        if (!$state) {
+                                            return null;
                                         }
-                                    ]),
+                                        return [
+                                            'label' => $state,
+                                            'color' => match($state) {
+                                                1 => 'success',
+                                                2 => 'info',
+                                                3 => 'warning', 
+                                                4 => 'danger',
+                                                default => 'gray',
+                                            }
+                                        ];
+                                    }),
 
                                 Forms\Components\Select::make('status_id')
                                     ->relationship('status', 'name')
